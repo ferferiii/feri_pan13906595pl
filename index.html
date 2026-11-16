@@ -15,6 +15,7 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.7 Vazirmatn,Tahoma,sans-serif}
 main{max-width:560px;margin:0 auto;padding:12px 14px 40px}
 button,input,select,textarea{font:inherit;color:inherit}
+input,select,textarea{font-size:16px}
 button{cursor:pointer;border:0;background:none}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 h1{font-size:20px;margin:0;font-weight:800}
@@ -654,7 +655,7 @@ async function setup(pw){var salt=crypto.getRandomValues(new Uint8Array(16)),key
 function ui(mode,msg){
   var d=document.getElementById('lk');if(!d){d=document.createElement('div');d.id='lk';document.body.appendChild(d)}
   d.style.cssText='position:fixed;inset:0;z-index:99;background:var(--bg);color:var(--ink);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto;font:inherit';
-  var ic=document.querySelector('link[rel=apple-touch-icon]'),inp='font:inherit;width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:inherit;margin:6px 0;text-align:center',bt='font:inherit;font-weight:600;width:100%;padding:12px;border:0;border-radius:12px;background:var(--acc);color:var(--on);margin-top:8px';
+  var ic=document.querySelector('link[rel=apple-touch-icon]'),inp='font:inherit;font-size:16px;width:100%;box-sizing:border-box;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:inherit;margin:6px 0;text-align:center',bt='font:inherit;font-weight:600;width:100%;padding:12px;border:0;border-radius:12px;background:var(--acc);color:var(--on);margin-top:8px';
   if(mode==='err'){d.innerHTML='<div style="max-width:340px;text-align:center;line-height:1.9">برای باز کردن اطلاعات رمزگذاری‌شده، برنامه را از آدرس امن (https) باز کن.</div>';return}
   var su=mode==='setup';
   d.innerHTML='<form id="lkf" style="width:100%;max-width:340px;text-align:center"><img src="'+(ic?ic.href:'')+'" width="84" height="84" style="border-radius:20px" alt=""><h2 style="margin:10px 0 4px">Ferferiii Planer</h2><div class="sub" style="line-height:1.9">'+(su?'یک رمز برای پلنر بساز. اطلاعاتت با این رمز روی همین گوشی رمزگذاری می‌شود. اگر رمز را فراموش کنی، اطلاعات قابل بازیابی نیست (مگر از فایل پشتیبان).':'رمز ورود را بزن')+'</div><input id="lk1" type="password" style="'+inp+'" placeholder="'+(su?'رمز (دست‌کم ۸ نویسه)':'رمز')+'" autocomplete="'+(su?'new-password':'current-password')+'">'+(su?'<input id="lk2" type="password" style="'+inp+'" placeholder="تکرار رمز" autocomplete="new-password">':'')+'<label class="sub" style="display:block;margin-top:6px"><input type="checkbox" id="lkr"'+(autoOn()?' checked':'')+'> این گوشی را به خاطر بسپار (دیگر رمز نخواهد)</label><div id="lkm" class="sub" style="min-height:22px;color:var(--no)">'+(msg||'')+'</div><button type="submit" style="'+bt+'" id="lkb">'+(su?'ساخت رمز و ورود':'ورود')+'</button></form>';
