@@ -1,4 +1,4 @@
-const C='farfari-v18',F='farfari-fonts-v1';
+const C='farfari-v19',F='farfari-fonts-v1';
 const GF='https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap';
 
 // کش کردن فونت: هم فایل محلی (اگر کنار index.html باشد) و هم فونت گوگل
@@ -40,4 +40,13 @@ self.addEventListener('fetch',e=>{
   if(u.origin!==location.origin)return;
   // فایل‌های خود برنامه: اول شبکه، اگر نبود کش
   e.respondWith(fetch(r).then(res=>{const c=res.clone();if(res.ok)caches.open(C).then(x=>x.put(r,c));return res}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))));
+});
+
+// با زدن روی اعلان، برنامه باز یا جلو آورده می‌شود
+self.addEventListener('notificationclick',e=>{
+  e.notification.close();
+  e.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(cs=>{
+    for(const c of cs){if('focus' in c)return c.focus()}
+    return self.clients.openWindow('./');
+  }));
 });
