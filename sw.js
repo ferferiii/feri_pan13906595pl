@@ -1,4 +1,4 @@
-const C='farfari-v24',F='farfari-fonts-v1';
+const C='farfari-v25',F='farfari-fonts-v1';
 const GF='https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap';
 
 // کش کردن فونت: هم فایل محلی (اگر کنار index.html باشد) و هم فونت گوگل
@@ -38,8 +38,17 @@ self.addEventListener('fetch',e=>{
     return;
   }
   if(u.origin!==location.origin)return;
-  // فایل‌های خود برنامه: اول شبکه، اگر نبود کش
-  e.respondWith(fetch((r.mode==='navigate'||/(\.html|\.webmanifest|\.js)$|\/$/.test(u.pathname))?new Request(u.href,{cache:'no-store'}):r).then(res=>{const c=res.clone();if(res.ok)caches.open(C).then(x=>x.put(r,c));return res}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))));
+  // فایل‌های خود برنامه: اول کش (فوری باز می‌شود، حتی با اینترنت ضعیف یا فیلتر)، و هم‌زمان در پس‌زمینه نسخهٔ جدید گرفته می‌شود
+  const nav=r.mode==='navigate';
+  const fresh=nav||/(\.html|\.webmanifest|\.js)$|\/$/.test(u.pathname);
+  const key=nav?new Request('index.html'):r;
+  e.respondWith((async()=>{
+    const c=await caches.open(C);
+    const hit=await c.match(key,{ignoreSearch:true});
+    const net=fetch(fresh?new Request(u.href,{cache:'no-store'}):r).then(res=>{if(res.ok)c.put(key,res.clone());return res});
+    if(hit){e.waitUntil(net.catch(()=>{}));return hit}
+    return net.catch(()=>caches.match(r).then(m=>m||caches.match('index.html')||Response.error()));
+  })());
 });
 
 // با زدن روی اعلان، برنامه باز یا جلو آورده می‌شود
