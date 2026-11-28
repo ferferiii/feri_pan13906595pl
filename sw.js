@@ -1,4 +1,4 @@
-const C='farfari-v26',F='farfari-fonts-v1';
+const C='farfari-v27',F='farfari-fonts-v1';
 const GF='https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap';
 
 // کش کردن فونت: هم فایل محلی (اگر کنار index.html باشد) و هم فونت گوگل
